@@ -40,8 +40,23 @@ void Widget::on_pushButton_Closed_clicked()
 
 void Widget::on_pushButton_Send_clicked()
 {
+    if(!ui->listWidget_contacts->currentItem())
+    {
+        QMessageBox::information(this, "提示", "请先选择联系人");
+        qDebug() << "没有选中联系人";
+        return;
+    }
+    QString contact = ui->listWidget_contacts->currentItem()->data(0).toString();
+//    qDebug() << "当前联系人：" << contact;
     QString msg = ui->textEdit_Msg->toPlainText();
-    m_webSocket.sendTextMessage(msg);
+
+    QJsonObject obj;
+    obj.insert("type", 2);
+    obj.insert("msg", msg);
+    obj.insert("contact", contact);
+
+    QJsonDocument doc(obj);
+    m_webSocket.sendTextMessage(doc.toJson());
 }
 
 void Widget::onConnected()
@@ -64,7 +79,7 @@ void Widget::closed()
 void Widget::onTextMessageReceived(QString msg)
 {
 //    qDebug() << "received:" << msg;
-    ui->listWidget_Msg->addItem(msg);
+//    ui->listWidget_Msg->addItem(msg);
     QJsonDocument doc = QJsonDocument::fromJson(msg.toUtf8());
     if(!doc.isObject())
     {

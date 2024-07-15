@@ -8,6 +8,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QException>
+#include <QMessageBox>
 
 namespace Ui {
 class Widget;
@@ -35,6 +36,8 @@ private:
     Ui::Widget *ui;
     QWebSocket m_webSocket;
     QUrl m_url;
+    QString contact;
+
 private:
     void loadContacts(QJsonDocument doc);
 };
