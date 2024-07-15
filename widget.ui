@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>652</width>
-    <height>502</height>
+    <width>658</width>
+    <height>519</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Widget</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -53,12 +53,12 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>310</x>
      <y>50</y>
-     <width>561</width>
+     <width>291</width>
      <height>216</height>
     </rect>
    </property>
@@ -66,7 +66,7 @@
     <item>
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>接收到的消息：</string>
+       <string>接收消息：</string>
       </property>
      </widget>
     </item>
@@ -75,12 +75,12 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>310</x>
      <y>280</y>
-     <width>561</width>
+     <width>291</width>
      <height>211</height>
     </rect>
    </property>
@@ -101,6 +101,28 @@
        <string>发送</string>
       </property>
      </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>50</y>
+     <width>258</width>
+     <height>441</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>联系人列表</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListWidget" name="listWidget_contacts"/>
     </item>
    </layout>
   </widget>

@@ -20,7 +20,6 @@ void Widget::on_pushButton_Start_clicked()
     ui->pushButton_Start->setEnabled(false);
     ui->pushButton_Closed->setEnabled(true);
     QString urlStr = ui->lineEdit_Url->text();
-
     QUrl url = QUrl(urlStr);
     connect(&m_webSocket, &QWebSocket::connected, this, &Widget::onConnected);
     connect(&m_webSocket, &QWebSocket::disconnected, this, &Widget::closed);
@@ -42,22 +41,63 @@ void Widget::on_pushButton_Closed_clicked()
 void Widget::on_pushButton_Send_clicked()
 {
     QString msg = ui->textEdit_Msg->toPlainText();
-    qDebug() << msg;
     m_webSocket.sendTextMessage(msg);
 }
 
 void Widget::onConnected()
 {
     connect(&m_webSocket, &QWebSocket::textMessageReceived, this, &Widget::onTextMessageReceived);
-//    m_webSocket.sendTextMessage("Hello");
+    // 获取一次联系人列表
+    QJsonObject info;
+    info.insert("type", 1);
+    QJsonDocument json(info);
+    m_webSocket.sendTextMessage(json.toJson());
+
 }
 
 void Widget::closed()
 {
-//    qDebug() << "关闭";
+    // 断开与槽的链接，修复重复发送的问题
+    disconnect(&m_webSocket, nullptr, nullptr, nullptr);
 }
 
 void Widget::onTextMessageReceived(QString msg)
 {
-    qDebug() << "received:" << msg;
+//    qDebug() << "received:" << msg;
+    ui->listWidget_Msg->addItem(msg);
+    QJsonDocument doc = QJsonDocument::fromJson(msg.toUtf8());
+    if(!doc.isObject())
+    {
+        qDebug() << "不是json数据";
+        return;
+    }
+    int type = doc["type"].toInt();
+
+    switch (type) {
+    case 1:
+        // 加载联系人列表
+        loadContacts(doc);
+        break;
+    case 2:
+        // 加载消息列表
+        ui->listWidget_Msg->addItem(doc["msg"].toString());
+        break;
+    default:
+        qDebug() << "当前类型为" << type << "没有找到类型";
+    }
 }
+
+void Widget::loadContacts(QJsonDocument doc)
+{
+    // 初始化联系人列表
+    ui->listWidget_contacts->clear();
+    QJsonArray contactsArr = doc["contacts"].toArray();
+    for(int i=0; i < contactsArr.size(); i++)
+    {
+//        qDebug() << contactsArr.at(i).toString();
+        ui->listWidget_contacts->addItem(contactsArr.at(i).toString());
+    }
+
+}
+
+

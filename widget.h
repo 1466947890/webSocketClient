@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QDebug>
 #include <QWebSocket>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include <QException>
 
 namespace Ui {
@@ -32,6 +35,8 @@ private:
     Ui::Widget *ui;
     QWebSocket m_webSocket;
     QUrl m_url;
+private:
+    void loadContacts(QJsonDocument doc);
 };
 
 #endif // WIDGET_H
